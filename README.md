@@ -110,14 +110,14 @@ Presenter - презентер содержит основную логику п
 
 1.Товар, где id: string— идентификатор. description:строка — описание. image: string— ссылка на изображение товара. title: string— название товара. category: string— категория товара. price: number | null— цена товара. Может быть нулевым, тогда товар недоступен.
 
-  interface IProduct {
+  `interface IProduct {
   id: string;
   description: string;
   image: string;
   title: string;
   category: string;
   price: number | null;
-} 
+}`
 
 2. Покупатель, где payment: TPayment— выбранный способ оплаты («картой» или «наличными»). email: string— электронная почта покупателя. phone: string— номер телефона покупателя. address: string— адрес доставки заказа.
 
