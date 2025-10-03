@@ -119,12 +119,12 @@ Presenter - презентер содержит основную логику п
 
 ```
 interface IProduct {
-id: string; // идентификатор товара
-description: string; // описание
-image: string; // ссылка на изображение
-title: string; // название товара
-category: string; // категория товара
-price: number | null; // цена (может быть null, тогда товар недоступен)
+  id: string; // идентификатор товара
+  description: string; // описание
+  image: string; // ссылка на изображение
+  title: string; // название товара
+  category: string; // категория товара
+  price: number | null; // цена (может быть null, тогда товар недоступен)
 }
 ```
 
@@ -132,10 +132,10 @@ price: number | null; // цена (может быть null, тогда това
 
 ```
 interface IBuyer {
-payment: TPayment;
-email: string;
-phone: string;
-address: string;
+  payment: TPayment;
+  email: string;
+  phone: string;
+  address: string;
 }
 ```
 
@@ -224,12 +224,12 @@ address: string;
 `valiDataBuyer(): Record<string, string>` – валидирует данные покупателя и возвращает объект с ошибками.
 
 Пример возвращаемого объекта ошибок:
-
-````{
+```
+{
   "payment": "Не выбран вид оплаты",
   "email": "Укажите email"
-}```
+}
+```
 
 
 ## Слой коммуникации
-````
