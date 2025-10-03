@@ -25,24 +25,24 @@ export interface IBuyer {
   address: string;
 }
 
-//каталог товаров который к нам приходит и мы его видим на главной странице
+//каталог товаров который к нам приходит с сервера
 export interface ICatalogResult {
   total: number;      // всего товаров
   items: IProduct[];  // список товаров
 }
 
-//заказа, который пользователь формирует
+//заказа, который отправляем на сервер
 export interface IOrder {
-  buyer: IBuyer;       // данные покупателя
-  items: IProduct[];   // список выбранных товаров (объекты товаров)
+  payment: TPayment;
+  email: string;
+  phone: string;
+  address: string;
+  total: number;
+  items: string[];   // список выбранных товаров (объекты товаров)
 }
 
 //результат оформления заказа, который возвращает сервер после успешного запроса.
 export interface IOrderResult {
-  payment: string,   // тип оплаты (например, "card" или "cash")
-  email: string,
-  phone: string,
-  address: string,
+  id: string;
   total: number,     // итоговая сумма заказа
-  items: string[]    // только id товаров, а не весь объект
 }

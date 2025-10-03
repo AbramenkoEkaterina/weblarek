@@ -233,3 +233,47 @@ interface IBuyer {
 
 
 ## Слой коммуникации
+### Класс ApiService
+Этот класс является «прослойкой» между нашим приложением и сервером. Он использует уже готовый базовый класс Api, чтобы выполнять HTTP-запросы.
+
+#Методы
+
+getProducts(): Promise<IProduct[]>
+Делает GET-запрос к эндпоинту /product/.
+Возвращает массив товаров IProduct[].
+
+postOrder(order: IOrder): Promise<IOrderResult>
+Делает POST-запрос к эндпоинту /order/.
+В параметре принимает объект заказа IOrder.
+Возвращает результат IOrderResult (сумма, список id товаров).
+
+#Типы
+
+Каталог товаров который к нам приходит с сервера
+```
+interface ICatalogResult {
+  total: number;      // всего товаров
+  items: IProduct[];  // список товаров
+}
+```
+
+Заказ, который отправляем на сервер
+```
+interface IOrder {
+  payment: TPayment;
+  email: string;
+  phone: string;
+  address: string;
+  total: number;
+  items: string[];   // список выбранных товаров (id)
+}
+```
+
+Результат оформления заказа, который возвращает сервер после успешного запроса.
+
+```
+interface IOrderResult {
+  id: string;
+  total: number,     // итоговая сумма заказа
+}
+```

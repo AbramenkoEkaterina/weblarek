@@ -3,6 +3,9 @@ import { Catalog } from "./components/Models/Catalog";
 import { Cart } from "./components/Models/Cart";
 import { Buyer } from "./components/Models/Buyer";
 import { apiProducts } from "./utils/data";
+import { ApiServise } from "./components/Models/ApiServise";
+import { API_URL } from "./utils/constants";
+import type { IOrder } from "./types";
 
 const log = console.log;
 const table = console.table;
@@ -130,3 +133,36 @@ console.log(
   "color: purple; font-weight: bold;"
 );
 table(buyer.getDataBuyer());
+
+
+//работаем с сетью
+
+const apiServise = new ApiServise(API_URL);
+
+try{
+  const catalog2 = await apiServise.getProducts()
+  log("%c Каталог получен с сервера", "color: orange; font-weight: bold;")
+  table(catalog2.items)
+} catch (error) {
+  console.error("%cОшибка работы с API:", "color: red; font-weight: bold;", error);
+}
+
+
+// Данные тестового заказа
+const testOrder: IOrder = {
+  payment: "card",
+  email: "test@test.ru",
+  phone: "+79280001400",
+  address: "Taganrog Lenina 1",
+  total: 750,
+  items: ["854cef69-976d-4c2a-a18c-2aa45046c390"] //эт id первого элемента который есть на сервере
+};
+
+// Отправляем заказ
+try {
+  const result = await apiServise.postOrder(testOrder);
+  log("%cЗаказ успешно создан:", "color: orange; font-weight: bold;");
+  table(result)
+} catch (error) {
+  console.error("Ошибка при создании заказа:", error);
+}
