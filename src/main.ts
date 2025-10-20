@@ -88,7 +88,7 @@ log(
   "color: purple; font-weight: bold;",
   cart.hasCartItem(firstProduct)
 );
-cart.clearCArt();
+cart.clearCart();
 log(
   "%cМетод очистки, корзина после удаления первого товара:",
   "color: purple; font-weight: bold;"

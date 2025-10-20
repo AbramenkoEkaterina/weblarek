@@ -19,7 +19,7 @@ export class Cart {
     }
 
     //очистка корзины;
-    clearCArt(): void {
+    clearCart(): void {
         this.items = [];
     }
 
