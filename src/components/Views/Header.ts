@@ -25,3 +25,5 @@ export class Header extends Component<IHeader> {
         this.counterElement.textContent = String(value);
     }
 }
+
+

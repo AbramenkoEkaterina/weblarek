@@ -6,6 +6,10 @@ import { apiProducts } from "./utils/data";
 import { ApiServise } from "./components/Models/ApiServise";
 import { API_URL } from "./utils/constants";
 import type { IOrder } from "./types";
+//import { Header } from "./components/Views/Header";
+//import { Gallery } from "./components/Views/Gallery";
+import { Card } from "./components/Views/Card/Card";
+import { ensureElement } from "./utils/utils";
 
 const log = console.log;
 const table = console.table;
@@ -166,3 +170,60 @@ try {
 } catch (error) {
   console.error("Ошибка при создании заказа:", error);
 }
+
+
+
+
+//------------------------------- 9спринт тесты----------------------------------//
+
+//здесь проверила header
+// class FakeEvents {
+//   emit(event: string, data? :unknown) {
+//     console.log(`событие вызвано: ${event}`, data)
+//   }
+// }
+
+// const headerElement = document.querySelector('.header') as HTMLElement;
+// const header = new Header(new FakeEvents(), headerElement);
+// header.counter = 5;
+
+
+//gallary
+// const galleryContainer = ensureElement('.gallery') as HTMLElement;
+// const gallery = new Gallery(galleryContainer);
+
+// // создаём 2 карточки
+// const card1 = document.createElement('div');
+// card1.textContent = 'Карточка 1';
+// const card2 = document.createElement('div');
+// card2.textContent = 'Карточка 2';
+
+// // показываем их в галерее
+// gallery.catalog = [card1, card2];
+
+
+// //cart
+// // Так как Card — абстрактный класс, создадим временный класс для теста
+// class TestCard extends Card {}
+
+// // Создаём элемент карточки
+// const cardElement = document.createElement('div');
+// cardElement.classList.add('card');
+// cardElement.innerHTML = `
+//   <h3 class="card__title"></h3>
+//   <p class="card__price"></p>
+// `;
+
+// // Добавляем карточку в страницу, чтобы её можно было увидеть
+// document.body.appendChild(cardElement);
+
+// // Создаём экземпляр класса
+// const card = new TestCard(cardElement);
+
+// // Проверяем работу сеттеров
+// card.titleCart = 'HEX-леденец';
+// card.priceCart = null;
+
+// // Проверим результат в консоли
+// console.log('Название:', ensureElement('.card__title')?.textContent);
+// console.log('Цена:', ensureElement('.card__price')?.textContent);

@@ -3,7 +3,7 @@ import { ensureElement } from "../../utils/utils"; //гарантирует то
 import { IEvents } from "../base/Events";
 
 interface IGallery {
-    catalog: HTMLElement[]
+    catalog: HTMLElement[];
 }
 
 export class Gallery extends Component<IGallery> {
@@ -11,7 +11,8 @@ export class Gallery extends Component<IGallery> {
 
     constructor(container: HTMLElement) {
         super(container);
-        this.catalogElement = ensureElement<HTMLElement>('.gallery', this.container);
+        //this.catalogElement = ensureElement<HTMLElement>('.gallery', this.container);
+        this.catalogElement = container;
     }
 
     set catalog(items: HTMLElement[]) {
