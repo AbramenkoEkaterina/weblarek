@@ -10,6 +10,8 @@ import type { IOrder } from "./types";
 //import { Gallery } from "./components/Views/Gallery";
 import { Card } from "./components/Views/Card/Card";
 import { ensureElement } from "./utils/utils";
+import { CardCatalog } from "./components/Views/Card/CardCatalog";
+import { EventEmitter } from "./components/base/Events";
 
 const log = console.log;
 const table = console.table;
@@ -227,3 +229,6 @@ try {
 // // Проверим результат в консоли
 // console.log('Название:', ensureElement('.card__title')?.textContent);
 // console.log('Цена:', ensureElement('.card__price')?.textContent);
+
+
+

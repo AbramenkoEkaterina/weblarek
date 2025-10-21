@@ -1,6 +1,6 @@
 import { Component } from "../base/Component";
-import { ensureElement } from "../../utils/utils"; //гарантирует то что элемент точно будет найден, иначе будет ошибка и выполнение кода остановится
-import { IEvents } from "../base/Events";
+//import { ensureElement } from "../../utils/utils"; //гарантирует то что элемент точно будет найден, иначе будет ошибка и выполнение кода остановится
+//import { IEvents } from "../base/Events";
 
 interface IGallery {
     catalog: HTMLElement[];

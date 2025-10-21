@@ -1,33 +1,33 @@
 import { Component } from "../../base/Component";
 import { ensureElement } from "../../../utils/utils";
-import { IEvents } from "../../base/Events";
 import { IProduct } from "../../../types";
 
 export interface ICard extends Partial<IProduct> { //делаем необязательными поля, т к нам не все поля нужны
   index?: number; // используется только для корзины
 }
 
-export abstract class Card extends Component<ICard> {
-  protected title: HTMLElement;
-  protected price: HTMLElement;
+export abstract class Card<T extends IProduct> extends Component<T> { // либо IProduct, либо интерфейс, расширяющий IProduct
+  protected titleCart: HTMLElement;
+  protected priceCart: HTMLElement;
+  protected id?: string;
  
 
   constructor(container: HTMLElement) {
     super(container);
 
-    this.title = ensureElement<HTMLElement>('.card__title', this.container);
-    this.price = ensureElement<HTMLElement>('.card__price', this.container);
+    this.titleCart = ensureElement<HTMLElement>('.card__title', this.container);
+    this.priceCart = ensureElement<HTMLElement>('.card__price', this.container);
   }
 
-  set titleCart(value:string) {
-    this.title.textContent = String(value)
+  set title(value:string) {
+    this.titleCart.textContent = String(value)
   }
 
-  set priceCart(value: number | null) {
+  set price(value: number | null) {
     if (value === null) {
-      this.price.textContent = 'Бесценно';
+      this.priceCart.textContent = 'Бесценно';
     } else {
-      this.price.textContent = `${value} синапсов`;
+      this.priceCart.textContent = `${value} синапсов`;
     }
   }
 }
