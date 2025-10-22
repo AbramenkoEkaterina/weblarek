@@ -1,5 +1,5 @@
 import { IProduct } from "../../../types";
-import { categoryMap } from "../../../utils/constants";
+import { categoryMap, CDN_URL } from "../../../utils/constants";
 import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
 import { Card} from "./Card";
@@ -17,7 +17,7 @@ export class CardCatalog extends Card<IProduct> {
 
         this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
-        this.btnBig = ensureElement<HTMLButtonElement>('.card', this.container);
+        this.btnBig = this.container as HTMLButtonElement;
 
         //клик по карточке, событие card:select
         this.btnBig.addEventListener('click', () => {
@@ -35,11 +35,12 @@ export class CardCatalog extends Card<IProduct> {
     }
 
     set image(value: string) {
-        this.setImage(this.imageElement, value, this.title)
-    }
+    this.imageElement.src = `${CDN_URL}/${value}`;
+    this.imageElement.alt = this.titleCart.textContent || 'Изображение товара';
+  }
 
     // переопределяем render
-  render(data: IProduct) {
+  render(data: IProduct): HTMLElement {
     this.id = data.id;
     this.title = data.title;
     this.price = data.price;

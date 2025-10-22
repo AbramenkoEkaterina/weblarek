@@ -5,7 +5,7 @@ import { IProduct } from "../../../types";
 
 
 
-export class CardBasket extends Card<IProduct> {
+export class CardBasket extends Card<ICard> {
   protected itemIndex: HTMLElement;
   protected btnDelete: HTMLButtonElement;
 

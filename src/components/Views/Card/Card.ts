@@ -6,7 +6,7 @@ export interface ICard extends Partial<IProduct> { //делаем необяза
   index?: number; // используется только для корзины
 }
 
-export abstract class Card<T extends IProduct> extends Component<T> { // либо IProduct, либо интерфейс, расширяющий IProduct
+export abstract class Card<T extends  Partial <IProduct>> extends Component<T> { // либо IProduct, либо интерфейс, расширяющий IProduct
   protected titleCart: HTMLElement;
   protected priceCart: HTMLElement;
   protected id?: string;
@@ -30,5 +30,6 @@ export abstract class Card<T extends IProduct> extends Component<T> { // либ�
       this.priceCart.textContent = `${value} синапсов`;
     }
   }
+
 }
 
