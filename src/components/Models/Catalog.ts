@@ -1,12 +1,16 @@
 import { IProduct } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class Catalog {
   private items: IProduct[] = []; //по умолчанию пустой массив товаров
   private selectedItem: IProduct | null = null; //выбранный товар, инициализируем  null, тк изначально выбор отсутсвует
 
+  constructor(private events: IEvents) {} //9ПР, добавили событие
+
   // сохраняем массив товаров
   setItems(items: IProduct[]): void {
     this.items = items;
+    this.events.emit('catalog:changed', {items}); // генерируем событие
   }
 
   //получить все товары

@@ -3,6 +3,7 @@ import { categoryMap } from "../../../utils/constants";
 import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
 import { Card, ICard } from "./Card";
+import { CDN_URL } from "../../../utils/constants";
 
 
 
@@ -21,7 +22,7 @@ export class CardPreview extends Card<IProduct> {
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
 
         this.btnElement.addEventListener('click', () => {
-            this.events.emit('product: add-to-cart', {id: this.id})
+            this.events.emit('product:add-to-cart', {id: this.id})
         })
     }
     set category(value: string) {
@@ -38,15 +39,16 @@ export class CardPreview extends Card<IProduct> {
     }
 
     set image(value: string) {
-        this.setImage(this.imageElement, value, this.title)
-    }
+        this.imageElement.src = `${CDN_URL}/${value}`;
+        this.imageElement.alt = this.titleCart.textContent || 'Изображение товара';
+      }
 
     set price(value: number | null) {
         if (value === null) {
             this.btnElement.textContent = 'Недоступно';
             this.btnElement.disabled = true;
         } else {
-            this.btnElement.textContent = "В корзину"ж
+            this.btnElement.textContent = "В корзину";
             this.btnElement.disabled = false
         }
         super.price = value;
