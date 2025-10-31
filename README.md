@@ -289,7 +289,120 @@ interface IOrderResult {
   - modal:close          — модалка закрыта (view -> презентер)
   // В дополнение — мы будем эмитить cart:changed и buyer:changed из презентера
 
-  View (представление)
+  ##View (представление)
+
+### Card (базовая карточка)
+```
+Поля:
+title: string
+price: number
+
+Методы:
+set title(value: string)
+set price(value: number)
+```
+
+CardCatalog
+```
+Расширяет: Card
+Назначение: карточка товара в каталоге.
+Доп. поля:
+category: string
+image: string
+События:
+card:select — при клике на карточку.
+```
+
+CardPreview
+```
+Расширяет: Card
+Поля:
+description: string
+inCart: boolean
+Методы:
+set description(value: string)
+set inCart(value: boolean)
+render(data: IProduct)
+События:
+product:button-click — добавление/удаление из корзины.
+```
+
+CardBasket
+```
+Назначение:
+Отображает товар в списке корзины.
+Поля:
+index: number
+deleteButton: HTMLButtonElement
+События:
+cart:remove — удаление товара из корзины.
+```
+
+Basket
+```
+Поля:
+itemsContainer: HTMLElement
+totalPrice: HTMLElement
+checkoutButton: HTMLButtonElement
+Методы:
+set items(cards: HTMLElement[])
+set total(value: number)
+set buttonDisabled(value: boolean)
+```
+### Form (базовый класс)
+Назначение:
+Базовый класс для всех форм. Обеспечивает общую логику обработки событий, отправки, ошибок и блокировки кнопки отправки.
+
+Поля:
+submitBtn: HTMLButtonElement — кнопка отправки формы.
+errorContainer: HTMLElement — контейнер для вывода ошибок.
+events: IEvents — брокер событий для коммуникации с презентером.
+
+Методы:
+setValid(isValid: boolean) — включает или выключает кнопку отправки.
+setErrors(message: string | null) — устанавливает или очищает сообщение об ошибке.
+inputChange(field: keyof IBuyer, value: string | null) — генерирует событие form:change при изменении поля.
+События:
+form:submit — при отправке формы.
+form:change — при изменении значения в поле.
+
+
+FormOrder
+```
+Назначение:
+Выбор способа оплаты и ввод адреса.
+Поля:
+payment: 'card' | 'cash'
+address: string
+Методы:
+selectPayment(value: string)
+isAddressValid(): boolean
+checkErrors()
+```
+
+FormContacts
+```
+Назначение:
+Ввод email и телефона.
+Поля:
+email: string
+phone: string
+Методы:
+isContactsValid(): boolean
+removeErrors()
+checkErrors()
+```
+
+Success
+```
+Назначение:
+Окно подтверждения успешного оформления заказа.
+Поля:
+description: HTMLElement
+closeButton: HTMLButtonElement
+Методы:
+set total(value: number) — отображает сумму списания.
+```
 
 Файл main.ts является центральной точкой приложения — он связывает модели (Models), представления (Views) и API, управляет потоками данных и пользовательскими сценариями.
 Здесь описана вся бизнес-логика и маршрутизация событий между слоями.
@@ -307,15 +420,10 @@ const buyer = new Buyer();           -> модель покупателя
 ### Создаются основные представления:
 
 gallery — отображение карточек каталога
-
 header — хедер с кнопкой и счетчиком корзины
-
 modal — модальное окно для отображения форм и карточек
-
 basketView — представление корзины
-
 FormOrder и FormContacts — формы заказа и контактов
-
 Success — окно успешного оформления заказа
 ## Подписки на события
 
