@@ -289,7 +289,7 @@ interface IOrderResult {
   - modal:close          — модалка закрыта (view -> презентер)
   // В дополнение — мы будем эмитить cart:changed и buyer:changed из презентера
 
-  ##View (представление)
+  ## View (представление)
 
 ### Card (базовая карточка)
 ```
@@ -315,16 +315,25 @@ card:select — при клике на карточку.
 
 CardPreview
 ```
-Расширяет: Card
+Отображает детальную информацию о товаре в модальном окне предпросмотра. 
+Позволяет добавить или удалить товар из корзины.
+
 Поля:
-description: string
-inCart: boolean
+categoryElement: HTMLElement — элемент отображения категории товара.
+imageElement: HTMLImageElement — изображение товара.
+btnElement: HTMLButtonElement — кнопка добавления/удаления товара.
+descriptionElement: HTMLElement — текстовое описание товара.
+events: IEvents — объект для генерации событий при взаимодействии пользователя.
+
 Методы:
-set description(value: string)
-set inCart(value: boolean)
-render(data: IProduct)
+set category(value: string) — устанавливает категорию товара и применяет соответствующий CSS-класс из categoryMap.
+set description(value: string) — устанавливает текст описания товара.
+set image(value: string) — задаёт изображение товара, формируя полный URL через CDN_URL.
+set buttonText(value: string) — обновляет текст кнопки. Если товар недоступен, кнопка блокируется.
+
 События:
-product:button-click — добавление/удаление из корзины.
+product:button-click — генерируется при клике на кнопку добавления/удаления товара, 
+передаёт объект { id: string } для обработки в презентере
 ```
 
 CardBasket
@@ -339,15 +348,28 @@ cart:remove — удаление товара из корзины.
 ```
 
 Basket
+Отображает содержимое корзины в модальном окне.
+Показывает список добавленных товаров с порядковыми номерами, итоговую сумму и кнопку оформления заказа.
+Позволяет удалять товары из корзины через карточки.
 ```
 Поля:
-itemsContainer: HTMLElement
-totalPrice: HTMLElement
-checkoutButton: HTMLButtonElement
-Методы:
-set items(cards: HTMLElement[])
-set total(value: number)
-set buttonDisabled(value: boolean)
+titleEl: HTMLElement — заголовок модального окна («Корзина»).
+listEl: HTMLElement — контейнер для списка товаров.
+buttonEl: HTMLButtonElement — кнопка «Оформить».
+priceEl: HTMLElement — элемент отображения итоговой суммы.
+templateCardBasket: HTMLTemplateElement — шаблон карточки товара в корзине.
+
+Методы
+set basket({ items, total }: BasketData) — отрисовывает список товаров в корзине.
+Если товаров нет — показывает сообщение «Корзина пуста» и блокирует кнопку.
+Для каждого товара создаёт карточку CardBasket, передавая данные и порядковый номер.
+set total(value: number) — обновляет отображение итоговой суммы в формате «{value} синапсов».
+
+События:
+basket:checkout — генерируется при клике на кнопку «Оформить»,
+сигнализирует презентеру о начале процесса оформления заказа.
+cart:remove — генерируется из дочерних карточек CardBasket при удалении товара,
+передаёт объект { id: string } для обработки в презентере.
 ```
 ### Form (базовый класс)
 Назначение:
@@ -368,29 +390,44 @@ form:change — при изменении значения в поле.
 
 
 FormOrder
+Отображает форму выбора способа оплаты и ввода адреса доставки.
+Позволяет пользователю указать, как он хочет оплатить заказ, и ввести адрес.
 ```
 Назначение:
 Выбор способа оплаты и ввод адреса.
 Поля:
-payment: 'card' | 'cash'
-address: string
+addressInput: HTMLInputElement — поле ввода адреса доставки.
+paymentButtons: HTMLButtonElement[] — кнопки выбора способа оплаты («Онлайн», «При получении»).
 Методы:
-selectPayment(value: string)
-isAddressValid(): boolean
-checkErrors()
+set address(value: string) — устанавливает значение в поле адреса.
+set payment(payment: TPayment | null) — визуально выделяет активную кнопку оплаты,
+добавляя класс button_alt-active соответствующей кнопке.
+inputChange(field: keyof IOrderFormData, value: string | TPayment) —
+защищённый метод (унаследован от Form), который эмитит событие 'form:change'
+при любом изменении данных формы.
+События
+'form:change' — генерируется при:
+вводе текста в поле адреса,
+выборе способа оплаты,
+передаёт объект { field: 'address' | 'payment', value: string | TPayment },
+позволяя презентеру обновлять модель и проверять валидность.
 ```
 
 FormContacts
+Отображает форму ввода контактных данных покупателя: email и телефон.
+Используется на втором шаге оформления заказа для сбора информации, необходимой для связи и доставки.
 ```
 Назначение:
 Ввод email и телефона.
 Поля:
-email: string
-phone: string
+emailInput: HTMLInputElement — поле ввода email-адреса.
+phoneInput: HTMLInputElement — поле ввода номера телефона.
 Методы:
-isContactsValid(): boolean
-removeErrors()
-checkErrors()
+set errors(value: string | null) — отображает ошибки валидации под формой,
+set submitButtonDisabled(value: boolean) — блокирует или разблокирует кнопку отправки.
+Автоматически обрабатывает ввод в полях и эмитит изменения через inputChange.
+События
+'form:change' — генерируется при любом изменении в полях формы
 ```
 
 Success
