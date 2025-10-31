@@ -1,17 +1,17 @@
 import { IProduct } from "../../../types";
-import { categoryMap } from "../../../utils/constants";
+import { categoryMap, CDN_URL } from "../../../utils/constants";
 import { ensureElement } from "../../../utils/utils";
 import { IEvents } from "../../base/Events";
-import { Card, ICard } from "./Card";
-import { CDN_URL } from "../../../utils/constants";
+import { Card } from "./Card";
 
 
 
-export class CardPreview extends Card<IProduct> {
+export class CardPreview extends Card<IProduct & { buttonText: string}> {
     protected categoryElement: HTMLElement;
     protected imageElement: HTMLImageElement;
     protected btnElement: HTMLButtonElement;
     protected descriptionElement: HTMLElement;
+
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
@@ -21,8 +21,9 @@ export class CardPreview extends Card<IProduct> {
         this.btnElement = ensureElement<HTMLButtonElement>('.card__button', this.container);
         this.descriptionElement = ensureElement<HTMLElement>('.card__text', this.container);
 
+        // При клике отсылаем id товара — презентер решит что делать
         this.btnElement.addEventListener('click', () => {
-            this.events.emit('product:add-to-cart', {id: this.id})
+            this.events.emit('product:button-click', {id: this.id}) 
         })
     }
     set category(value: string) {
@@ -30,7 +31,7 @@ export class CardPreview extends Card<IProduct> {
         this.categoryElement.className = 'card__category';
         const modifier = (categoryMap as Record<string, string>)[value.toLowerCase()];
         if (modifier) {
-            this.categoryElement.classList.add(modifier)
+            this.categoryElement.classList.add(modifier);
         }
     }
 
@@ -43,26 +44,15 @@ export class CardPreview extends Card<IProduct> {
         this.imageElement.alt = this.titleCart.textContent || 'Изображение товара';
       }
 
-    set price(value: number | null) {
-        if (value === null) {
-            this.btnElement.textContent = 'Недоступно';
-            this.btnElement.disabled = true;
+
+     set buttonText(value:string) {
+        this.btnElement.textContent = value;
+        // если товар недоступен — блокируем кнопку
+        if (value === 'Недоступно') {
+            this.btnElement.disabled = true
         } else {
-            this.btnElement.textContent = "В корзину";
-            this.btnElement.disabled = false
+            this.btnElement.disabled = false;
         }
-        super.price = value;
     }
-
-    render(data: IProduct) {
-    this.id = data.id;
-    this.title = data.title;
-    this.category = data.category;
-    this.image = data.image;
-    this.description = data.description;
-    this.price = data.price;
-    return this.container;
-  }
-
     
 }

@@ -31,5 +31,7 @@ export abstract class Card<T extends  Partial <IProduct>> extends Component<T> {
     }
   }
 
+  
+
 }
 

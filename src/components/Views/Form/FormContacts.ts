@@ -14,15 +14,18 @@ export class FormContacts extends Form<IContactsFormData> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
 
-    this.emailInput = ensureElement<HTMLInputElement>('input[name="email"]', container);
-    this.phoneInput = ensureElement<HTMLInputElement>('input[name="phone"]', container);
+    // Находим поля ввода
+    this.emailInput = ensureElement<HTMLInputElement>('input[name="email"]', this.container);
+    this.phoneInput = ensureElement<HTMLInputElement>('input[name="phone"]', this.container);
 
-    this.emailInput.addEventListener('input', () => this.validate());
-    this.phoneInput.addEventListener('input', () => this.validate());
-  }
+    // Подписываемся на изменения email
+    this.emailInput.addEventListener('input', () => {
+      this.inputChange('email', this.emailInput.value.trim());
+    });
 
-  validate() {
-    const valid = this.emailInput.value.includes('@') && this.phoneInput.value.length >= 10;
-    this.setValid(valid);
+    // Подписываемся на изменения телефона
+    this.phoneInput.addEventListener('input', () => {
+      this.inputChange('phone', this.phoneInput.value.trim());
+    });
   }
 }

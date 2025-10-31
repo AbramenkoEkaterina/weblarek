@@ -1,40 +1,48 @@
 import { IProduct } from "../../types";
-
+import { IEvents } from "../base/Events";
 export class Cart {
-    private items: IProduct[] = []; //товары в корзине, изначально пусто
+  private items: IProduct[] = [];
 
-    //получить товары в корзине
-    getCartItems(): IProduct[] {
-        return this.items;
-    }
+  constructor(protected events: IEvents) {
+    this.items = [];
+  }
 
-    //добавление товара, который был получен в параметре, в массив корзины
-    addCartItem(item: IProduct): void {
-        this.items.push(item);
-    }
+  getCartItems(): IProduct[] {
+    return this.items;
+  }
 
-    //удаление товара, полученного в параметре из массива корзины;
-    removeCartItem(item: IProduct): void {
-        this.items = this.items.filter((p) => p.id !== item.id);
-    }
+  addCartItem(item: IProduct): void {
+    this.items.push(item);
+    this.emitChange();
+  }
 
-    //очистка корзины;
-    clearCart(): void {
-        this.items = [];
-    }
+  removeCartItem(item: IProduct): void {
+    this.items = this.items.filter(p => p.id !== item.id);
+    this.emitChange();
+  }
 
-    //получение стоимости всех товаров в корзине;
-    getCartTotal() : number {
-        return this.items.reduce((sum, item) => sum + (item.price || 0), 0);
-    }
+  clearCart(): void {
+    this.items = [];
+    this.emitChange();
+  }
 
-    //получение количества товаров в корзине;
-    getCartCount() : number {
-        return this.items.length;
-    }
+  getCartTotal(): number {
+    return this.items.reduce((sum, item) => sum + (item.price || 0), 0);
+  }
 
-    //проверка наличия товара в корзине по его id, полученного в параметр метода.
-    hasCartItem(item: IProduct): boolean {
-        return this.items.some((p) => p.id === item.id);
-    }
+  getCartCount(): number {
+    return this.items.length;
+  }
+
+  hasCartItem(item: IProduct): boolean {
+    return this.items.some(p => p.id === item.id);
+  }
+
+  // отдельный метод, чтобы не дублировать emit
+  private emitChange(): void {
+    this.events.emit('cart:changed', {
+      items: this.items,
+      total: this.getCartTotal(),
+    });
+  }
 }

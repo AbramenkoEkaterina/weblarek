@@ -27,6 +27,7 @@ export class Catalog {
   //сохранить выбранный товар
   setSelectedItem(item: IProduct): void {
     this.selectedItem = item;
+    this.events.emit('catalog:item-selected')
   }
 
   //получить выбранный товар

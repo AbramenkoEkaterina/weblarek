@@ -1,7 +1,7 @@
 import { Card, ICard } from "./Card";
 import { IEvents } from "../../base/Events";
 import { ensureElement } from "../../../utils/utils";
-import { IProduct } from "../../../types";
+
 
 
 
@@ -18,8 +18,8 @@ export class CardBasket extends Card<ICard> {
 
     // вешаем обработчик на кнопку
     this.btnDelete.addEventListener('click', () => {
-      this.events.emit('card:remove', {id: this.id})
-    });
+      this.events.emit('cart:remove', { id: this.id });
+});
   }
 
   // сеттер для порядкового номера
@@ -27,7 +27,7 @@ export class CardBasket extends Card<ICard> {
     this.itemIndex.textContent = String(value);
   }
 
-  render(data: IProduct) {
+  render(data: ICard) {
     this.id = data.id;
     return super.render(data);
   }

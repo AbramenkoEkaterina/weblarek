@@ -10,14 +10,14 @@ import { Card} from "./Card";
 export class CardCatalog extends Card<IProduct> {
     protected categoryElement: HTMLElement;
     protected imageElement: HTMLImageElement;
-    protected btnBig: HTMLButtonElement;
+    protected btnBig: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container)
 
         this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
         this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
-        this.btnBig = this.container as HTMLButtonElement;
+        this.btnBig = this.container as HTMLElement;
 
         //клик по карточке, событие card:select
         this.btnBig.addEventListener('click', () => {

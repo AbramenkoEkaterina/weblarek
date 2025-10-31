@@ -6,6 +6,7 @@ import { IEvents } from '../base/Events';
 export class Modal extends Component<unknown> {
   protected closeButton: HTMLButtonElement;
   protected contentElement: HTMLElement;
+  
 
   constructor(container: HTMLElement, protected events: IEvents) {
     super(container);
@@ -40,5 +41,9 @@ export class Modal extends Component<unknown> {
     this.container.classList.remove('modal_active');
     this.contentElement.innerHTML = ''; // очистить контент
     this.events.emit('modal:close');
+  }
+
+  get element(): HTMLElement {
+    return this.container;
   }
 }
