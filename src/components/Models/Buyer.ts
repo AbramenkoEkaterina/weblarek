@@ -1,4 +1,5 @@
 import { IBuyer, TPayment } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class Buyer {
     private payment: TPayment | null = null;
@@ -8,12 +9,16 @@ export class Buyer {
 
     //сохранение данных в модели, возможность сохранить только одно значение, например, только адрес или только телефон,
     // не удалив при этом значения других полей, которые уже могут храниться в классе;
+    constructor(private events: IEvents) {};
 
     setDataBuyer(data: Partial<IBuyer>) :void {
         if (data.payment !== undefined) this.payment = data.payment;
         if (data.address !== undefined) this.address = data.address;
         if (data.phone !== undefined) this.phone = data.phone;
         if (data.email !== undefined) this.email = data.email;
+
+        // Сообщаем системе, что данные покупателя изменились
+        this.events.emit('buyer:changed', this.getDataBuyer());
     }
 
     //получение всех данных покупателя;
@@ -34,6 +39,7 @@ export class Buyer {
         this.address = "";
         this.phone = "";
         this.email = "";
+        this.events.emit('buyer:changed', this.getDataBuyer());
     }
 
     //валидация данных

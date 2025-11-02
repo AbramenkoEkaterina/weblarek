@@ -21,7 +21,7 @@ export abstract class Form <IForm> extends Component<IForm> {
         // Отправка формы
         container.addEventListener('submit', (event) => {
           event.preventDefault();
-          this.events.emit('form:submit');
+          this.events.emit(`${this.container.getAttribute('name')}:submit`);
         });
     }
 

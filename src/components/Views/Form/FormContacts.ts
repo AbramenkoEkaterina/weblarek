@@ -28,4 +28,12 @@ export class FormContacts extends Form<IContactsFormData> {
       this.inputChange('phone', this.phoneInput.value.trim());
     });
   }
+
+  set email(value: string) {
+    this.emailInput.value = value;
+  }
+
+  set phone(value: string) {
+    this.phoneInput.value = value;
+  }
 }

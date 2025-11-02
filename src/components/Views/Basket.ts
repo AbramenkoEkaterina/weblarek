@@ -1,11 +1,9 @@
-import { ensureElement, cloneTemplate } from "../../utils/utils";
+import { ensureElement } from "../../utils/utils";
 import { IEvents } from "../base/Events";
-import { CardBasket } from "./Card/CardBasket";
 import { Component } from "../base/Component";
-import { IProduct } from "../../types";
 
 interface BasketData {
-  items: IProduct[];
+  items: HTMLElement[];
   total: number;
 }
 
@@ -36,7 +34,7 @@ export class Basket extends Component<BasketData> {
   /** Отрисовка корзины */
   set basket({ items, total }: BasketData) {
     this.listEl.replaceChildren(); // очищаем список
-    this.total = total;
+    //this.total = total;
 
     if (items.length === 0) {
       const empty = document.createElement("p");
@@ -45,13 +43,14 @@ export class Basket extends Component<BasketData> {
       this.buttonEl.disabled = true;
     } else {
       this.buttonEl.disabled = false;
+      this.listEl.append(...items);
 
-      items.forEach((product, index) => {
-        const itemEl = cloneTemplate(this.templateCardBasket);
-        const card = new CardBasket(itemEl, this.events);
-        const rendered = card.render({ ...product, index: index + 1 });
-        this.listEl.append(rendered);
-      });
+      // items.forEach((product, index) => {
+      //   const itemEl = cloneTemplate(this.templateCardBasket);
+      //   const card = new CardBasket(itemEl, this.events);
+      //   const rendered = card.render({ ...product, index: index + 1 });
+      //   this.listEl.append(rendered);
+      // });
     }
 
     this.total = total;

@@ -26,11 +26,7 @@ export class FormOrder extends Form<IOrderFormData> {
     // Клик по способу оплаты
     this.paymentButtons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.paymentButtons.forEach((b) =>
-          b.classList.remove('button_alt-active')
-        );
-        btn.classList.add('button_alt-active');
-        this.inputChange('payment', btn.name as TPayment);
+        this.inputChange('payment', btn.name as TPayment); 
       });
     });
   }

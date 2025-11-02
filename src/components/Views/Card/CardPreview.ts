@@ -47,12 +47,11 @@ export class CardPreview extends Card<IProduct & { buttonText: string}> {
 
      set buttonText(value:string) {
         this.btnElement.textContent = value;
-        // если товар недоступен — блокируем кнопку
-        if (value === 'Недоступно') {
-            this.btnElement.disabled = true
-        } else {
-            this.btnElement.disabled = false;
-        }
+    }
+
+    // Состояние доступности кнопки
+    set buttonDisabled(value: boolean) {
+        this.btnElement.disabled = value;
     }
     
 }
