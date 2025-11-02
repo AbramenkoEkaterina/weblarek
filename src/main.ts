@@ -18,6 +18,7 @@ import { FormOrder } from "./components/Views/Form/FormOrder";
 import { FormContacts } from "./components/Views/Form/FormContacts";
 import { Success } from "./components/Views/Success";
 import { CardBasket } from "./components/Views/Card/CardBasket";
+import { ModalView } from "./components/Views/Modal";
 
 const events = new EventEmitter();
 const api = new ApiServise(API_URL);
@@ -81,7 +82,7 @@ events.on('catalog:item-selected', () => {
   modal.content = previewView.render({...product, buttonText});
   previewView.buttonDisabled = buttonDisabled; //состояние кнопки
   modal.open();
-  (modal as any).currentView = "preview";
+  modal.currentView = ModalView.Preview;
 });
 
 //КОРЗИНА----------------------------------------------------------------------------------------//
@@ -129,7 +130,7 @@ events.on('basket:open', () => {
   modal.content = basketView.render()
   modal.open();
   // Помечаем, что сейчас открыта корзина (чтобы обновлять live)
-  (modal as any).currentView = "basket";
+  modal.currentView = ModalView.Basket;
 })
 
 //Когда корзина изменилась
@@ -155,7 +156,7 @@ events.on('cart:changed', () => {
 events.on("basket:checkout", () => {
   modal.content = orderFormView.render();
   modal.open();
-  (modal as any).currentView = "order";
+  modal.currentView = ModalView.Order;
 });
 
 
@@ -163,7 +164,7 @@ events.on("basket:checkout", () => {
 events.on("order:submit", () => {
   modal.content = contactsFormView.render();
   modal.open();
-  (modal as any).currentView = "contacts";
+  modal.currentView = ModalView.Contacts;
 });
 
 
@@ -219,7 +220,7 @@ events.on("contacts:submit", () => {
     api.postOrder(order)
       .then((response) => {
         successView.total = response.total;
-        (modal as any).currentView = "success";
+        modal.currentView = ModalView.Success;
         modal.content = successView.render();
         modal.open();
 
