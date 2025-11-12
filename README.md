@@ -576,3 +576,8 @@ Presenter (main.ts)	—	Управление потоком данных и со
 Ошибка: «Укажите email и телефон».
 
 При успешной валидации → создается заказ (api.postOrder()).
+
+![каталог](./previu/catalog.png)
+![Описание картинки](./previu/priviu.png)
+![корзина](./previu/basket.png)
+![успех](./previu/ecgt.png)
